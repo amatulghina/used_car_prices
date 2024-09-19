@@ -162,25 +162,6 @@ def cleaning_null (df):
 
 
 
-def format_columns (df):
-
-    # Group 'Plug-In Hybrid' with 'Hybrid' and 'E85 Flex Fuel' with 'Gasoline'
-    df['fuel_type'] = df['fuel_type'].replace({
-    'Plug-In Hybrid': 'Hybrid',
-    'E85 Flex Fuel': 'Gasoline'
-    })
-
-    #Group transmission in smaller groups
-    df['transmission'] = df['transmission'].apply(map_transmission)
-
-    # change colors to have few values
-    df = update_color(df, 'ext_col')
-    df = update_color(df, 'int_col')
-    #change to int
-    df[['ext_col','int_col']] = df[['ext_col','int_col']].astype(int)
-
-    return df
-    
 
 
 def map_transmission(trans):
@@ -218,6 +199,24 @@ def update_color(df, col):
     return df
 
 
+def format_columns (df):
+
+    # Group 'Plug-In Hybrid' with 'Hybrid' and 'E85 Flex Fuel' with 'Gasoline'
+    df['fuel_type'] = df['fuel_type'].replace({
+    'Plug-In Hybrid': 'Hybrid',
+    'E85 Flex Fuel': 'Gasoline'
+    })
+
+    #Group transmission in smaller groups
+    df['transmission'] = df['transmission'].apply(map_transmission)
+
+    # change colors to have few values
+    df = update_color(df, 'ext_col')
+    df = update_color(df, 'int_col')
+    #change to int
+    df[['ext_col','int_col']] = df[['ext_col','int_col']].astype(int)
+
+    return df
 
 #FORMATING AND DUMMIE CREATION FUNCTIONS
 
