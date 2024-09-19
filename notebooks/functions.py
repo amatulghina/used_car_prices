@@ -196,6 +196,7 @@ def update_color(df, col):
     mask = df[col].str.contains(pattern, case=False, regex=True)
     # Change the value if the text does NOT contain any word from the list
     df.loc[~mask, col] = '16'
+    
     return df
 
 
