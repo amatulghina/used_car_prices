@@ -28,6 +28,8 @@ transmission_mapping = {
 
 
 
+
+
 #function to import yaml file
 def import_yaml():
     try:
@@ -186,21 +188,22 @@ def map_transmission(trans):
     return 'Other'
 
 def update_color(df, col):
-    df.loc[(df[col].str.contains('Black', case=False, na=False)), col] = 'Black'
-    df.loc[(df[col].str.contains('Noir', case=False, na=False)), col] = 'Black'
-    df.loc[(df[col].str.contains('Blue', case=False, na=False)), col] = 'Blue'
-    df.loc[(df[col].str.contains('Blu', case=False, na=False)), col] = 'Blue'
-    df.loc[(df[col].str.contains('Red', case=False, na=False)), col] = 'Red'
-    df.loc[(df[col].str.contains('White', case=False, na=False)), col] = 'White'
-    df.loc[(df[col].str.contains('Green', case=False, na=False)), col] = 'Green'
-    df.loc[(df[col].str.contains('Gray', case=False, na=False)), col] = 'Gray'
-    df.loc[(df[col].str.contains('Grey', case=False, na=False)), col] = 'Gray'
-    df.loc[(df[col].str.contains('Silver', case=False, na=False)), col] = 'Silver'
-    df.loc[(df[col].str.contains('Metallic', case=False, na=False)), col] = 'Metallic'
-    df.loc[(df[col].str.contains('Yellow', case=False, na=False)), col] = 'Yellow'
-    df.loc[(df[col].str.contains('Orange', case=False, na=False)), col] = 'Orange'
-    df.loc[(df[col].str.contains('Brown', case=False, na=False)), col] = 'Brown'
-    df.loc[(df[col].str.contains('Beige', case=False, na=False)), col] = 'Beige'
+    
+    df.loc[(df[col].str.contains('Black', case=False, na=False)), col] = '1'
+    df.loc[(df[col].str.contains('Noir', case=False, na=False)), col] = '2'
+    df.loc[(df[col].str.contains('Blue', case=False, na=False)), col] = '3'
+    df.loc[(df[col].str.contains('Blu', case=False, na=False)), col] = '4'
+    df.loc[(df[col].str.contains('Red', case=False, na=False)), col] = '5'
+    df.loc[(df[col].str.contains('White', case=False, na=False)), col] = '6'
+    df.loc[(df[col].str.contains('Green', case=False, na=False)), col] = '7'
+    df.loc[(df[col].str.contains('Gray', case=False, na=False)), col] = '8'
+    df.loc[(df[col].str.contains('Grey', case=False, na=False)), col] = '9'
+    df.loc[(df[col].str.contains('Silver', case=False, na=False)), col] = '10'
+    df.loc[(df[col].str.contains('Metallic', case=False, na=False)), col] = '11'
+    df.loc[(df[col].str.contains('Yellow', case=False, na=False)), col] = '12'
+    df.loc[(df[col].str.contains('Orange', case=False, na=False)), col] = '13'
+    df.loc[(df[col].str.contains('Brown', case=False, na=False)), col] = '14'
+    df.loc[(df[col].str.contains('Beige', case=False, na=False)), col] = '15'
     colors = ['Black', 'Blue', 'Red','White','Green','Gray','Silver','Metallic','Gold','Brown','Orange','Beige','Yellow','Purple','Pink']
 
     # Use .str.contains() to create a mask for rows containing any word from words_list
@@ -209,7 +212,7 @@ def update_color(df, col):
     mask = df[col].str.contains(pattern, case=False, regex=True)
 
     # Change the value if the text does NOT contain any word from the list
-    df.loc[~mask, col] = 'Others'
+    df.loc[~mask, col] = '16'
     return df
 
 
@@ -239,20 +242,32 @@ def creat_dummies (df):
     
     dummies_fuel = pd.get_dummies(df[['id','fuel_type']], columns=['fuel_type'], drop_first=False)
     dummies_transm = pd.get_dummies(df[['id','transmission']], columns=['transmission'], drop_first=False)
-    dummies_brand = pd.get_dummies(df[['id','brand']], columns=['brand'], drop_first=False)
+    dummies_int_col = pd.get_dummies(df[['id','int_col']], columns=['int_col'], drop_first=False)
+    dummies_ext_col = pd.get_dummies(df[['id','ext_col']], columns=['ext_col'], drop_first=False)
     
     #creating manual dummies
-
+    #engine
+    
     engine_info = df.apply(lambda row: extract_engine_info(row['engine'], row['fuel_type']), axis=1)
     df[['horsepower', 'engine_size', 'cylinders']] = engine_info
 
+    #brand
+    if 'price' in df:
+ 
+        mean_price_by_brand = df.groupby('brand')[['price']].mean().reset_index().sort_values(by='price', ascending=False)
+        mean_price_by_brand['brand_ratio'] = mean_price_by_brand['price']/mean_price_by_brand.iloc[-1,-1]
+    
+    
     #merging all into one df
     merged_df = pd.merge(df, dummies_fuel, on='id', how='left')
     merged_df = pd.merge(merged_df, dummies_transm, on='id', how='left')
-    merged_df = pd.merge(merged_df, dummies_brand, on='id', how='left')
-
+    merged_df = pd.merge(merged_df, dummies_int_col, on='id', how='left')
+    merged_df = pd.merge(merged_df, dummies_ext_col, on='id', how='left')
+    if 'price' in df:
+        merged_df = pd.merge(merged_df,mean_price_by_brand[['brand', 'brand_ratio']], on='brand', how='left')
+    
     #droping old columns that were transformed into dummies
-    merged_df = merged_df.drop(['fuel_type','transmission','engine','brand'], axis = 1)
+    merged_df = merged_df.drop(['fuel_type','transmission','engine','brand','int_col','ext_col'], axis = 1)
 
     # changing the values for 'clean_title' and 'accident' to true or false
     merged_df['clean_title']= merged_df['clean_title'].apply(lambda x: False if x == 'No' else True)
