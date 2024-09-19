@@ -176,6 +176,8 @@ def format_columns (df):
     # change colors to have few values
     df = update_color(df, 'ext_col')
     df = update_color(df, 'int_col')
+    #change to int
+    df[['ext_col','int_col']] = df[['ext_col','int_col']].astype(int)
 
     return df
     
@@ -204,13 +206,13 @@ def update_color(df, col):
     df.loc[(df[col].str.contains('Orange', case=False, na=False)), col] = '13'
     df.loc[(df[col].str.contains('Brown', case=False, na=False)), col] = '14'
     df.loc[(df[col].str.contains('Beige', case=False, na=False)), col] = '15'
-    colors = ['Black', 'Blue', 'Red','White','Green','Gray','Silver','Metallic','Gold','Brown','Orange','Beige','Yellow','Purple','Pink']
+
+    colors = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
 
     # Use .str.contains() to create a mask for rows containing any word from words_list
     # We use '|'.join to create a regular expression that matches any word in words_list
     pattern = '|'.join(colors)
     mask = df[col].str.contains(pattern, case=False, regex=True)
-
     # Change the value if the text does NOT contain any word from the list
     df.loc[~mask, col] = '16'
     return df
