@@ -1,10 +1,17 @@
 
 
-# Title for the Project
+# Analysis of used car elements' weight in the definition of used cars price
 
 
 ## Description
 
+Using a dataset of used cars that includes a wide range of characteristics and prices provides an excellent opportunity to train on predictive models. The dataset encompasses various attributes, such as technical specifications, engine power, accident history, and aesthetic features.
+
+Why is this important?
+On the surface, it is difficult to intuitively determine which characteristics most significantly affect a car's price. Additionally, consumers who lack extensive knowledge of automobiles may find it challenging to assess whether a car's price is fair.
+
+How does this model help?
+This predictive model is designed to help identify and understand the factors that matter most when pricing a used car. By analyzing the data, it becomes clear which attributes play a critical role in determining the car's value and which ones are less significant. This insight is invaluable for both sellers wanting to price their vehicles appropriately and buyers looking to make informed purchasing decisions.
 
 ## Data Cleaning
 
