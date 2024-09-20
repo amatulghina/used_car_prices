@@ -157,3 +157,12 @@ From Kaggle we found a Playground Prediction Competition. There is a data set wi
 
 [DS:  Regression of Used Car Prices ](https://www.kaggle.com/competitions/playground-series-s4e9/leaderboard)
 
+
+## Slides
+
+[Presentation] (https://docs.google.com/presentation/d/1i4jDMUIB0a-p9x-t8T-v6WQOGErrYs0Owi0uBb2RZGE/edit?usp=sharing)
+
+
+
+
+
