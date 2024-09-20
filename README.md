@@ -160,7 +160,7 @@ From Kaggle we found a Playground Prediction Competition. There is a data set wi
 
 ## Slides
 
-[Presentation] (https://docs.google.com/presentation/d/1i4jDMUIB0a-p9x-t8T-v6WQOGErrYs0Owi0uBb2RZGE/edit?usp=sharing)
+[Presentation](https://docs.google.com/presentation/d/1i4jDMUIB0a-p9x-t8T-v6WQOGErrYs0Owi0uBb2RZGE/edit?usp=sharing)
 
 
 
